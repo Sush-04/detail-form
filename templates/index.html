@@ -143,6 +143,8 @@
               required
             />
           </div>
+          <input type="reset" value="Reset" />
+          <span></span>
           <button type="button" id="nextStep">Next</button>
         </div>
 
@@ -158,10 +160,21 @@
             <label for="languages">Languages Known:</label>
             <input type="text" id="languages" name="languages" required />
           </div>
+          <!-- <div class="form-group">
+            <label for="resume">Upload Resume (PDF, max 2 MB):</label>
+            <input
+              type="file"
+              id="resume"
+              name="resume"
+              accept="application/pdf"
+              required
+            />
+          </div> -->
 
           <!-- Submit button -->
           <button type="submit">Submit</button>
-          <input type="reset" value="Reset" />
+
+          <button type="button" id="prevStep">Back</button>
         </div>
       </form>
     </div>
@@ -171,10 +184,46 @@
         .addEventListener("submit", function (event) {
           event.preventDefault();
 
-          // Retrieve form data
-          const formData = new FormData(event.target);
+          const dobInput = document.getElementById("dob");
+          const dobValue = new Date(dobInput.value);
+          const today = new Date();
+          const minAgeDate = new Date(
+            today.getFullYear() - 18,
+            today.getMonth(),
+            today.getDate()
+          );
 
-          // Check if all fields are filled
+          // Check if the entered date of birth is at least 18 years ago
+          if (dobValue > minAgeDate) {
+            alert("You must be at least 18 years old to submit this form.");
+            return;
+          }
+          // Get references to form sections and back button
+          const step1 = document.getElementById("step1");
+          const step2 = document.getElementById("step2");
+          const prevButton = document.getElementById("prevStep");
+
+          // Back button event listener
+          prevButton.addEventListener("click", function () {
+            // Show step 1, hide step 2
+            step1.classList.remove("hidden");
+            step2.classList.add("hidden");
+          });
+          // const resumeInput = document.getElementById("resume");
+
+          // // File size validation
+          // resumeInput.addEventListener("change", function () {
+          //   const file = resumeInput.files[0];
+          //   const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+
+          //   if (file && file.size > maxSize) {
+          //     alert("Please upload a PDF file less than 2 MB in size.");
+          //     resumeInput.value = ""; // Clear the file input
+          //   }
+          // });
+
+          // Continue with form submission if validation passes
+          const formData = new FormData(event.target);
           let isFormComplete = true;
           for (const value of formData.values()) {
             if (!value) {
@@ -184,14 +233,25 @@
           }
 
           if (isFormComplete) {
-            // Show success message
-
             alert("Successfully submitted!");
+            // If you want to proceed with form submission after age validation passes,
+            // you can uncomment the following line.
+            // event.target.submit();
           } else {
-            // Show incomplete form data alert
             alert("Form data is incomplete!");
           }
         });
+
+      // Set maximum date for date of birth field to 18 years ago from current date
+      const dobInput = document.getElementById("dob");
+      const today = new Date();
+      const maxAgeDate = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+      );
+      const maxAgeDateString = maxAgeDate.toISOString().split("T")[0]; // Convert date to string in YYYY-MM-DD format
+      dobInput.setAttribute("max", maxAgeDateString);
     </script>
     <script>
       // Get references to form sections
@@ -214,6 +274,8 @@
           step2.classList.remove("hidden");
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.js"></script>
+
     <script>
       document
         .getElementById("employeeForm")

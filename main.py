@@ -38,7 +38,7 @@ def add_employee():
                 print("enters")
                 cursor = conn.cursor()
                 print("cursor connected")
-                query = "INSERT INTO detail (name, empid, dept, dob, gender, designation, salary,experience,lang) VALUES (%s, %s, %s, %s, %s, %s, %s,%s,%s)"
+                query = "INSERT INTO details (name, empid, dept, dob, gender, designation, salary,experience,lang) VALUES (%s, %s, %s, %s, %s, %s, %s,%s,%s)"
                 employee_values = (
                     data['name'], data['empid'], data['dept'], data['dob'], data['gender'],
                     data['role'], data['salary'],data['experience'],data['lang']
