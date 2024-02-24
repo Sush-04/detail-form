@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Details Form</title>
+    <!-- <link rel="stylesheet" href="styles.css" /> -->
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 50px auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        background-color: #4b0082;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #800080;
+      }
+      input[type="reset"] {
+        background-color: #ff8080; /* Light pink */
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px; /* Add margin for spacing */
+      }
+
+      input[type="reset"]:hover {
+        background-color: #ff6666; /* Darker pink on hover */
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Employee Details Form</h2>
+      <form id="employeeForm" action="/employee" method="POST">
+        <div id="step1">
+          <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              maxlength="30"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="employeeId">Employee ID:</label>
+            <input type="text" id="employeeId" name="employeeId" required />
+          </div>
+          <div class="form-group">
+            <label for="department">Department:</label>
+            <select id="department" name="department" required>
+              <option value="">Select Department</option>
+              <option value="AI DS">AI DS</option>
+              <option value="IT">IT</option>
+              <option value="CSE">CSE</option>
+              <option value="CSBS">CSBS</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required />
+          </div>
+          <div class="form-group">
+            <label>Gender:</label>
+            <label
+              ><input
+                type="radio"
+                name="gender"
+                value="Male"
+                required
+              />Male</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="gender"
+                value="Female"
+                required
+              />Female</label
+            >
+          </div>
+          <div class="form-group">
+            <label for="designation">Designation:</label>
+            <input type="text" id="designation" name="designation" />
+          </div>
+          <div class="form-group">
+            <label for="salary">Salary:</label>
+            <input
+              type="number"
+              id="salary"
+              name="salary"
+              maxlength="8"
+              required
+            />
+          </div>
+          <button type="button" id="nextStep">Next</button>
+        </div>
+
+        <!-- <button type="submit">Submit</button>
+        <input type="reset" value="Reset" /> -->
+        <!-- <button type="button" id="nextStep">Next</button> -->
+        <div id="step2" class="hidden">
+          <div class="form-group">
+            <label for="experience">Experience:</label>
+            <input type="text" id="experience" name="experience" required />
+          </div>
+          <div class="form-group">
+            <label for="languages">Languages Known:</label>
+            <input type="text" id="languages" name="languages" required />
+          </div>
+
+          <!-- Submit button -->
+          <button type="submit">Submit</button>
+          <input type="reset" value="Reset" />
+        </div>
+      </form>
+    </div>
+    <script>
+      document
+        .getElementById("employeeForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // Retrieve form data
+          const formData = new FormData(event.target);
+
+          // Check if all fields are filled
+          let isFormComplete = true;
+          for (const value of formData.values()) {
+            if (!value) {
+              isFormComplete = false;
+              break;
+            }
+          }
+
+          if (isFormComplete) {
+            // Show success message
+
+            alert("Successfully submitted!");
+          } else {
+            // Show incomplete form data alert
+            alert("Form data is incomplete!");
+          }
+        });
+    </script>
+    <script>
+      // Get references to form sections
+      const step1 = document.getElementById("step1");
+      const step2 = document.getElementById("step2");
+
+      // Next button event listener
+      document
+        .getElementById("nextStep")
+        .addEventListener("click", function () {
+          // Validate step 1 fields
+          const firstName = document.getElementById("firstName").value;
+          if (!firstName) {
+            alert("Please enter first name");
+            return;
+          }
+
+          // Hide step 1, show step 2
+          step1.classList.add("hidden");
+          step2.classList.remove("hidden");
+        });
+    </script>
+    <script>
+      document
+        .getElementById("employeeForm")
+        .addEventListener("submit", function (event) {
+          console.log("clicked");
+          event.preventDefault();
+
+          const name = document.getElementById("firstName").value;
+          const empid = document.getElementById("employeeId").value;
+          const dept = document.getElementById("department").value;
+          const dob = document.getElementById("dob").value;
+          const gender = document.querySelector(
+            'input[name="gender"]:checked'
+          ).value;
+          const role = document.getElementById("designation").value;
+          const salary = document.getElementById("salary").value;
+          const experience = document.getElementById("experience").value;
+          const lang = document.getElementById("languages").value;
+          // const phone = document.getElementById("phone").value;
+          console.log(name);
+          console.log(empid);
+          console.log(dob);
+
+          const employeeData = {
+            name,
+            empid,
+            dept,
+            dob,
+            gender,
+            role,
+            salary,
+            experience,
+            lang,
+          };
+          console.log(employeeData);
+
+          fetch("/add_employee", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(employeeData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data.message); // Log success message
+              // You can perform actions after successful submission if needed
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Handle error
+            });
+        });
+    </script>
+  </body>
+</html>
